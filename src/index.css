@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-brand-cream: #E8D9C5;
+  --color-brand-blue: #002395;
+  --color-ink: #141414;
+  --font-sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "Courier New", Courier, monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-brand-cream text-ink font-sans antialiased selection:bg-ink selection:text-brand-cream;
+  }
+}
+
+@layer components {
+  .outlined-text {
+    -webkit-text-stroke: 1px rgba(20, 20, 20, 0.2);
+    color: transparent;
+  }
+}
