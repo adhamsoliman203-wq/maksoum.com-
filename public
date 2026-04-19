@@ -67,7 +67,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#E8D9C5] text-[#141414] font-sans selection:bg-black selection:text-[#E8D9C5]">
+    <div className="min-h-screen bg-[#E8D9C5] text-[#141414] font-sans selection:bg-black selection:text-[#E8D9C5] overflow-x-hidden">
       {/* Navbar */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-[#E8D9C5]/90 backdrop-blur-md py-4 border-b border-black/5' : 'py-8'}`}>
         <div className="max-w-[1800px] mx-auto px-6 flex justify-between items-center">
@@ -81,18 +81,44 @@ export default function App() {
         </div>
       </nav>
 
-      {/* Hero */}
+      {/* Menu Overlay */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div 
+            initial={{ x: '-100%' }} 
+            animate={{ x: 0 }} 
+            exit={{ x: '-100%' }} 
+            className="fixed inset-0 z-[60] bg-[#F5F5F0] p-12 flex flex-col"
+          >
+            <button onClick={() => setIsMenuOpen(false)} className="self-start mb-20"><X size={32} /></button>
+            <div className="flex flex-col gap-8">
+              {CATEGORIES.map(cat => (
+                <a 
+                  key={cat.id} 
+                  href={`#${cat.id}`} 
+                  onClick={() => setIsMenuOpen(false)} 
+                  className="text-5xl font-black uppercase italic hover:translate-x-4 transition-transform"
+                >
+                  {cat.name}
+                </a>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Hero Section */}
       <section className="h-screen flex flex-col items-center justify-center text-center px-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6 text-[10px] font-black uppercase tracking-[0.5em] opacity-50">
           Cairo / Streetwear Lab
         </motion.div>
-        <h1 className="text-8xl md:text-[150px] font-black leading-[0.85] uppercase italic mb-12">BUILT<br />DIFFERENT.</h1>
+        <h1 className="text-7xl md:text-[150px] font-black leading-[0.85] uppercase italic mb-12">BUILT<br />DIFFERENT.</h1>
         <button className="px-10 py-5 bg-black text-white rounded-full font-black uppercase text-[11px] tracking-[0.3em] hover:scale-105 transition-transform">
           Shop the Drop
         </button>
       </section>
 
-      {/* Grid */}
+      {/* Product Grid */}
       <section className="py-20 bg-white rounded-t-[60px]">
         <div className="max-w-[1800px] mx-auto px-6">
           {CATEGORIES.map((category) => (
@@ -112,7 +138,7 @@ export default function App() {
                       <span className="font-black text-[13px] text-[#002395]">{product.price} LE</span>
                     </div>
                     <button 
-                      onClick={() => window.open(`https://wa.me/201021668541?text=Order: ${product.name}`, '_blank')}
+                      onClick={() => window.open(`https://wa.me/201021668541?text=Salam! I want to order: ${product.name}`, '_blank')}
                       className="w-full py-5 bg-black text-white rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] hover:bg-[#002395] transition-colors"
                     >
                       Buy via WhatsApp
@@ -129,8 +155,8 @@ export default function App() {
       <footer className="py-24 bg-[#E8D9C5] text-center border-t border-black/5">
         <div className="text-6xl font-black italic uppercase mb-8">مَقْسُوم</div>
         <div className="flex justify-center gap-8 mb-12">
-           <a href="https://instagram.com/maksoum.eg" target="_blank" className="p-4 bg-black/5 rounded-full"><Instagram size={24} /></a>
-           <a href="https://wa.me/201021668541" target="_blank" className="p-4 bg-black/5 rounded-full"><Phone size={24} /></a>
+           <a href="https://instagram.com/maksoum.eg" target="_blank" className="p-4 bg-black/5 rounded-full hover:bg-black hover:text-white transition-all"><Instagram size={24} /></a>
+           <a href="https://wa.me/201021668541" target="_blank" className="p-4 bg-black/5 rounded-full hover:bg-black hover:text-white transition-all"><Phone size={24} /></a>
         </div>
         <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-30">© 2026 Maksoume Architecture</p>
       </footer>
