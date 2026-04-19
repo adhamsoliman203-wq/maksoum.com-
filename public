@@ -1,0 +1,139 @@
+import { ShoppingBag, X, ArrowRight, Instagram, Phone, Menu } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion'; 
+
+const CATEGORIES = [
+  { id: 'tshirts', name: 'T-SHIRTS', image: '/c57c1732-bff3-40f5-820d-a8862315390e.jfif' },
+  { id: 'hoodies', name: 'HOODIES', image: '/coll hodie.jpg' },
+  { id: 'jackets', name: 'JACKETS', image: '/hctdyufu.jpg' },
+  { id: 'jeans', name: 'JEANS', image: '/dnkk.jpeg' },
+  { id: 'sweatpants', name: 'SWEATPANTS', image: '/dwmkwh.jpg' },
+];
+
+const products = [
+  // T-SHIRTS
+  { id: 't-1', name: 'MAKSOUME CALLIGRAPHY TEE', price: 350, category: 'T-SHIRTS', image: '/c57c1732-bff3-40f5-820d-a8862315390e.jfif' },
+  { id: 't-2', name: 'GRAPHIC BACK TEE', price: 350, category: 'T-SHIRTS', image: '/lmxka.png' },
+  { id: 't-3', name: 'COMING SOON VAPOR TEE', price: 350, category: 'T-SHIRTS', image: '/ad597b1d4f904e1a681fb2ac2900bc53.jpg' },
+  { id: 't-4', name: 'COMING SOON +18 TEE', price: 350, category: 'T-SHIRTS', image: '/c838112da7072efd068a9dd28582609f.jpg' },
+  { id: 't-5', name: 'COMING SOON X TEE', price: 350, category: 'T-SHIRTS', image: '/mkankx.png' },
+
+  // HOODIES
+  { id: 'h-1', name: 'COMIC GRAPHIC HOODIE', price: 599, category: 'HOODIES', image: '/coll hodie.jpg' },
+  { id: 'h-2', name: 'TUL8TE SPECIAL HOODIE', price: 599, category: 'HOODIES', image: '/unnamed.jpg' },
+  { id: 'h-3', name: 'GOLD CALLIGRAPHY HOODIE', price: 599, category: 'HOODIES', image: '/lxlx.jpg' },
+  { id: 'h-4', name: 'TECHNICAL FLYING CAP', price: 599, category: 'HOODIES', image: '/Picture2.png' },
+
+  // JACKETS
+  { id: 'j-1', name: 'ZIP-UP LIGHT BLUE', price: 499, category: 'JACKETS', image: '/hctdyufu.jpg' },
+  { id: 'j-2', name: 'ZIP-UP PHANTOM BLACK', price: 499, category: 'JACKETS', image: '/hfryrt.jpg' },
+  { id: 'j-3', name: 'ZIP-UP HEATHER GREY', price: 499, category: 'JACKETS', image: '/mncejej.png' },
+  { id: 'j-4', name: 'ZIP-UP BURGUNDY 07', price: 499, category: 'JACKETS', image: '/unnamed (7).jpg' },
+  { id: 'j-5', name: 'OVERSIZED ZIP BURGUNDY', price: 499, category: 'JACKETS', image: '/unnamed (8).jpg' },
+  { id: 'j-6', name: 'OVERSIZED ZIP BLACK', price: 499, category: 'JACKETS', image: '/unnamed (9).jpg' },
+  { id: 'j-7', name: 'OVERSIZED ZIP WHITE', price: 499, category: 'JACKETS', image: '/unnamed (10).jpg' },
+  { id: 'j-8', name: 'OVERSIZED ZIP POWDER BLUE', price: 499, category: 'JACKETS', image: '/unnamed (11).jpg' },
+  { id: 'j-9', name: 'OVERSIZED ZIP CHOCOLATE', price: 499, category: 'JACKETS', image: '/unnamed (12).jpg' },
+
+  // JEANS
+  { id: 'jn-1', name: 'BAGGY DENIM CALLIGRAPHY', price: 550, category: 'JEANS', image: '/c57c1732-bff3-40f5-820d-a8862315390e.jfif' },
+  { id: 'jn-2', name: 'PAINT SPLATTER MID-BLUE', price: 550, category: 'JEANS', image: '/dnkk.jpeg' },
+  { id: 'jn-3', name: 'PAINT SPLATTER LIGHT BLUE', price: 550, category: 'JEANS', image: '/mcekdwhi.jpeg' },
+  { id: 'jn-4', name: 'DARK DENIM BAGGY', price: 550, category: 'JEANS', image: '/mdkw.jpeg' },
+  { id: 'jn-5', name: 'VINTAGE GREY DENIM', price: 550, category: 'JEANS', image: '/kdnkwhi.jpg' },
+  { id: 'jn-6', name: 'BLUE WASH DENIM', price: 550, category: 'JEANS', image: '/mkncepopc.jpeg' },
+  { id: 'jn-7', name: 'CHARCOAL BLACK DENIM', price: 550, category: 'JEANS', image: '/mwdej.jpeg' },
+  { id: 'jn-8', name: 'HERITAGE LIGHT DENIM', price: 650, category: 'JEANS', image: '/unnamed (13).jpg' },
+
+  // SWEATPANTS
+  { id: 's-1', name: 'EYE GRAPHIC BLACK', price: 550, category: 'SWEATPANTS', image: '/dwmkwh.jpg' },
+  { id: 's-2', name: 'EYE GRAPHIC GREY', price: 550, category: 'SWEATPANTS', image: '/grey better pants.jpg' },
+  { id: 's-3', name: 'PURPLE CALLIGRAPHY GREY', price: 550, category: 'SWEATPANTS', image: '/croped pants.jpg' },
+  { id: 's-4', name: 'PURPLE CALLIGRAPHY CHOCO', price: 550, category: 'SWEATPANTS', image: '/d3wdtjkwj.jpg' },
+  { id: 's-5', name: 'PURPLE CALLIGRAPHY BLACK', price: 550, category: 'SWEATPANTS', image: '/hxwnhwfwgj.jpg' },
+  { id: 's-6', name: 'MINIMAL STREET GREY', price: 550, category: 'SWEATPANTS', image: '/mebjf.jpg' },
+  { id: 's-7', name: 'STREET GREY V2', price: 550, category: 'SWEATPANTS', image: '/nckef.jpg' },
+  { id: 's-8', name: 'URBAN SWEATS BURGUNDY', price: 550, category: 'SWEATPANTS', image: '/unnamed (18).jpg' }
+];
+
+export default function App() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-[#E8D9C5] text-[#141414] font-sans selection:bg-black selection:text-[#E8D9C5]">
+      {/* Navbar */}
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-[#E8D9C5]/90 backdrop-blur-md py-4 border-b border-black/5' : 'py-8'}`}>
+        <div className="max-w-[1800px] mx-auto px-6 flex justify-between items-center">
+          <button onClick={() => setIsMenuOpen(true)} className="flex items-center gap-2 font-bold text-[10px] uppercase tracking-[0.3em]">
+            <Menu size={18} /> Menu
+          </button>
+          <div className="text-3xl font-black italic uppercase tracking-tighter">مَقْسُوم</div>
+          <div className="flex items-center gap-4">
+            <ShoppingBag size={20} />
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <section className="h-screen flex flex-col items-center justify-center text-center px-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6 text-[10px] font-black uppercase tracking-[0.5em] opacity-50">
+          Cairo / Streetwear Lab
+        </motion.div>
+        <h1 className="text-8xl md:text-[150px] font-black leading-[0.85] uppercase italic mb-12">BUILT<br />DIFFERENT.</h1>
+        <button className="px-10 py-5 bg-black text-white rounded-full font-black uppercase text-[11px] tracking-[0.3em] hover:scale-105 transition-transform">
+          Shop the Drop
+        </button>
+      </section>
+
+      {/* Grid */}
+      <section className="py-20 bg-white rounded-t-[60px]">
+        <div className="max-w-[1800px] mx-auto px-6">
+          {CATEGORIES.map((category) => (
+            <div key={category.id} id={category.id} className="mb-40 scroll-mt-24">
+              <h2 className="text-6xl md:text-8xl font-black mb-16 italic uppercase tracking-tighter border-b border-black/5 pb-6">
+                {category.name}
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
+                {products.filter(p => p.category === category.name).map((product) => (
+                  <div key={product.id} className="group">
+                    <div className="relative aspect-[3/4] overflow-hidden rounded-[40px] bg-[#f5f5f5] mb-6">
+                      <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                      <div className="absolute top-6 left-6 bg-white/90 px-3 py-1 rounded-full text-[8px] font-black uppercase">Maksoume Orig.</div>
+                    </div>
+                    <div className="flex justify-between items-start px-2 mb-4">
+                      <h3 className="font-black text-[11px] uppercase max-w-[70%] tracking-tight leading-tight">{product.name}</h3>
+                      <span className="font-black text-[13px] text-[#002395]">{product.price} LE</span>
+                    </div>
+                    <button 
+                      onClick={() => window.open(`https://wa.me/201021668541?text=Order: ${product.name}`, '_blank')}
+                      className="w-full py-5 bg-black text-white rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] hover:bg-[#002395] transition-colors"
+                    >
+                      Buy via WhatsApp
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-24 bg-[#E8D9C5] text-center border-t border-black/5">
+        <div className="text-6xl font-black italic uppercase mb-8">مَقْسُوم</div>
+        <div className="flex justify-center gap-8 mb-12">
+           <a href="https://instagram.com/maksoum.eg" target="_blank" className="p-4 bg-black/5 rounded-full"><Instagram size={24} /></a>
+           <a href="https://wa.me/201021668541" target="_blank" className="p-4 bg-black/5 rounded-full"><Phone size={24} /></a>
+        </div>
+        <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-30">© 2026 Maksoume Architecture</p>
+      </footer>
+    </div>
+  );
+}
